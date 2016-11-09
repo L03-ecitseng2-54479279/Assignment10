@@ -1,0 +1,76 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/p5.js/0.4.6/p5.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/p5.js/0.4.6/addons/p5.sound.js"></script>
+    <script>
+        // array variables
+        var x1 = [];
+        var y1 = [];
+        var spd = [];
+
+        // image and sound variables
+        var img;
+        var sound;
+        var music;
+        var amplitude;
+
+        function preload() {
+            img = loadImage("batman.png");
+            sound = loadSound("thunder.mp3");
+            music = loadSound("batman.mp3");
+        }
+
+        function setup() {
+            createCanvas(300, 300);
+
+            // background music
+            music.loop();
+
+            //setting amplitude
+            amplitude = new p5.Amplitude();
+            amplitude.setInput(sound);
+
+            // array
+            for (var i = 0; i < 300; i++) {
+                spd[i] = random(.1, 10);
+                x1[i] = random(0, 400);
+                y1[i] = random(0, 400);
+            }
+        }
+
+        function mouseClicked() {
+            if (sound.isPlaying()) {
+                sound.stop();
+            } else {
+                sound.play();
+            }
+        }
+
+        function draw() {
+
+            background(random(0, 100));
+            fill(random(0, 80));
+            noStroke();
+            var level = amplitude.getLevel();
+            var size = map(level, 0, 1, 0, 200);
+            ellipse(width / 2, height / 2, 300, 300);
+
+            fill(150);
+            text("Click to start/stop the thunder", 70, 280)
+
+            for (var i = 0; i < 300; i++) {
+                noStroke();
+                ellipse(x1[i], [i], 3, 3);
+                x1[i] += random(-spd[i], spd[i]);
+                y1[i] += random(-spd[i], spd[i]);
+                fill(random(x1[i], y1[i]));
+            }
+
+            image(img, 0, 80, 300, 160);
+        }
+    </script>
+</head>
+
+</html>
